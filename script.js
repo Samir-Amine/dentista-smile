@@ -22,7 +22,7 @@
 
     // Your webhook endpoint (Zapier / Make / n8n / your own backend).
     // Leave as "" to disable the webhook call entirely.
-    WEBHOOK_URL: "https://your-webhook-url.example.com/rendezvous",
+    WEBHOOK_URL: "https://hook.eu1.make.com/2u7x69cioniphw74ma5cqt9op9u78o8g",
   };
 
   /* ---------------------------------------------------------
