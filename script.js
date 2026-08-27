@@ -22,7 +22,7 @@
 
     // Your webhook endpoint (Zapier / Make / n8n / your own backend).
     // Leave as "" to disable the webhook call entirely.
-    WEBHOOK_URL: "https://hook.eu1.make.com/2u7x69cioniphw74ma5cqt9op9u78o8g",
+    WEBHOOK_URL: "https://your-webhook-url.example.com/rendezvous",
   };
 
   /* ---------------------------------------------------------
@@ -220,19 +220,15 @@
 
   function buildSlots(startHour, endHour, container) {
     for (let h = startHour; h < endHour; h++) {
-      for (let m = 0; m < 60; m += 60) {
-        const hh = String(h).padStart(2, "0");
-        const mm = String(m).padStart(2, "0");
-        const label = `${hh}:${mm}`;
+      const label = `${String(h).padStart(2, "0")}:00`;
 
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "slot-btn";
-        btn.textContent = label;
-        btn.setAttribute("data-time", label);
-        btn.addEventListener("click", () => selectSlot(btn));
-        container.appendChild(btn);
-      }
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "slot-btn";
+      btn.textContent = label;
+      btn.setAttribute("data-time", label);
+      btn.addEventListener("click", () => selectSlot(btn));
+      container.appendChild(btn);
     }
   }
 
