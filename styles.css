@@ -1,0 +1,343 @@
+/* =========================================================
+   DENTAL CLINIC BOOKING FORM — STYLESHEET
+   Palette   : Clinical blue (#2B6CB0), soft sky (#E8F3FC),
+               white (#FFFFFF), slate grey text (#3C4858)
+   Type      : Poppins (headings, LTR) / Tajawal (Arabic)
+               Inter (body, LTR)
+   Layout    : Single responsive card, logical properties
+               so it flips cleanly between LTR and RTL.
+   ========================================================= */
+
+:root {
+  --color-primary: #2B6CB0;
+  --color-primary-dark: #1E4E85;
+  --color-primary-light: #E8F3FC;
+  --color-surface: #FFFFFF;
+  --color-bg: #F2F7FC;
+  --color-text: #1E2A38;
+  --color-text-muted: #64748B;
+  --color-border: #DCE6F0;
+  --color-error: #D9534F;
+  --color-success: #1E8E5A;
+  --color-whatsapp: #25D366;
+
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0 20px 45px -20px rgba(30, 78, 133, 0.25);
+
+  --font-heading: "Poppins", "Tajawal", sans-serif;
+  --font-body: "Inter", "Tajawal", sans-serif;
+}
+
+/* Arabic mode swaps both fonts to Tajawal, which reads well in both scripts */
+html[lang="ar"] {
+  --font-heading: "Tajawal", sans-serif;
+  --font-body: "Tajawal", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 16px 64px;
+}
+
+.card {
+  width: 100%;
+  max-width: 640px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 28px 28px 32px;
+  border: 1px solid var(--color-border);
+}
+
+/* ============ HEADER ============ */
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 18px;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+
+.brand__icon {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand__text h1 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin: 0;
+  line-height: 1.25;
+}
+
+.brand__subtitle {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+/* Language toggle pill */
+.lang-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+.lang-toggle:hover { background: #dcecfa; }
+.lang-toggle__option { padding: 2px 4px; border-radius: 6px; transition: color 0.15s ease; }
+.lang-toggle__option--active { color: var(--color-primary-dark); }
+.lang-toggle__divider { color: var(--color-border); }
+
+.intro {
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  margin: 0 0 22px;
+  line-height: 1.5;
+}
+
+/* ============ FIELDSETS ============ */
+.fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 0 26px;
+}
+
+.fieldset legend {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-primary-dark);
+  padding: 0 0 12px;
+  width: 100%;
+  border-bottom: 1px dashed var(--color-border);
+  margin-bottom: 14px;
+}
+
+.field { margin-bottom: 16px; }
+.field:last-child { margin-bottom: 0; }
+
+label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 6px;
+}
+
+.req { color: var(--color-error); }
+
+.icon-inline { flex-shrink: 0; }
+
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 11px 14px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus, select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(43, 108, 176, 0.15);
+  background: var(--color-surface);
+}
+
+/* Validation state */
+.field.invalid input,
+.field.invalid select {
+  border-color: var(--color-error);
+  background: #FDF4F3;
+}
+
+.error-msg {
+  display: none;
+  color: var(--color-error);
+  font-size: 0.78rem;
+  margin-top: 5px;
+}
+.field.invalid .error-msg { display: block; }
+
+/* ============ SERVICE INFO BOX ============ */
+.service-info {
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-border);
+  border-inline-start: 4px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  animation: fadeIn 0.25s ease;
+}
+
+.service-info__row { margin-bottom: 8px; }
+.service-info__row:last-child { margin-bottom: 0; }
+
+.service-info__label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.service-info__desc {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.service-info__price {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ TIME SLOTS ============ */
+.slot-group-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: 14px 0 8px;
+}
+.slot-group-title--break {
+  color: var(--color-error);
+  font-weight: 500;
+  font-style: italic;
+}
+
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.slot-btn {
+  padding: 9px 14px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.slot-btn:hover { border-color: var(--color-primary); }
+.slot-btn.selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ============ SUBMIT ============ */
+.submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: 0 10px 25px -10px rgba(43, 108, 176, 0.55);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 14px 30px -10px rgba(43, 108, 176, 0.6); }
+.submit-btn:active { transform: translateY(0); }
+
+.form-note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin: 12px 0 0;
+}
+
+.status-msg {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  text-align: center;
+}
+.status-msg.success { background: #E7F7EF; color: var(--color-success); border: 1px solid #BFE8D3; }
+.status-msg.error   { background: #FDF0EF; color: var(--color-error); border: 1px solid #F3CFCC; }
+
+/* ============ RTL (Arabic) ADJUSTMENTS ============ */
+html[dir="rtl"] .service-info { border-inline-start: none; border-inline-end: 4px solid var(--color-primary); }
+html[dir="rtl"] .status-msg,
+html[dir="rtl"] .form-note { direction: rtl; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 480px) {
+  .card { padding: 20px 16px 26px; }
+  .card__header { flex-direction: column; align-items: stretch; }
+  .lang-toggle { align-self: flex-end; }
+  .brand__text h1 { font-size: 1.02rem; }
+  .slot-btn { flex: 1 1 calc(33.333% - 8px); text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

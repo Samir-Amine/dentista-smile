@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cabinet Dentaire — Prise de Rendez-vous / حجز موعد</title>
+<meta name="description" content="Formulaire de prise de rendez-vous en ligne pour cabinet dentaire, bilingue Français / Arabe.">
+
+<!-- Google Fonts: Poppins + Inter for FR/LTR, Tajawal for AR/RTL -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="page">
+  <div class="card" role="main">
+
+    <!-- ============ HEADER ============ -->
+    <header class="card__header">
+      <div class="brand">
+        <span class="brand__icon" aria-hidden="true">
+          <!-- simple tooth glyph, doubles as the page's signature mark -->
+          <svg viewBox="0 0 48 48" width="30" height="30" fill="none">
+            <path d="M24 6c-4.5 0-6.8 2.2-9.4 2.2-3.3 0-6.6-2-9-.4C2.7 9.7 2 13.6 2.6 18c.7 5 3 9.6 3.8 15.4.5 3.4 1 7.8 3.7 8.5 3 .8 4-3.6 4.6-7.6.5-3.4 1.4-6.6 3.8-6.6 2.5 0 3.2 3.3 3.7 6.7.6 4 1.6 8.3 4.6 7.5 2.7-.7 3.2-5.1 3.7-8.5.8-5.8 3.1-10.4 3.8-15.4.6-4.4-.1-8.3-3-10.2-2.4-1.6-5.7.4-9 .4C30.8 8.2 28.5 6 24 6Z" fill="currentColor"/>
+          </svg>
+        </span>
+        <div class="brand__text">
+          <h1 data-i18n="clinicName">Cabinet Dentaire Al Amal</h1>
+          <p class="brand__subtitle" data-i18n="clinicTagline">Votre sourire, notre priorité</p>
+        </div>
+      </div>
+
+      <!-- Language toggle -->
+      <button type="button" id="langToggle" class="lang-toggle" aria-label="Changer de langue / تغيير اللغة">
+        <span class="lang-toggle__option lang-toggle__option--active" data-lang-option="fr">FR</span>
+        <span class="lang-toggle__divider">/</span>
+        <span class="lang-toggle__option" data-lang-option="ar">AR</span>
+      </button>
+    </header>
+
+    <p class="intro" data-i18n="introText">
+      Remplissez le formulaire ci-dessous pour réserver votre rendez-vous. Nous vous confirmerons via WhatsApp.
+    </p>
+
+    <!-- ============ FORM ============ -->
+    <form id="bookingForm" novalidate>
+
+      <!-- ---- Section 1 : Coordonnées du patient ---- -->
+      <fieldset class="fieldset">
+        <legend data-i18n="sectionContact">1. Vos coordonnées</legend>
+
+        <div class="field">
+          <label for="fullName" data-i18n="labelFullName">Nom complet <span class="req">*</span></label>
+          <input type="text" id="fullName" name="fullName" autocomplete="name"
+                 data-i18n-placeholder="placeholderFullName" placeholder="Ex : Sara El Amrani" required>
+          <span class="error-msg" id="err-fullName" data-i18n="errorFullName">Veuillez saisir votre nom complet.</span>
+        </div>
+
+        <div class="field">
+          <label for="phone">
+            <svg class="icon-inline" viewBox="0 0 32 32" width="16" height="16" aria-hidden="true">
+              <path fill="#25D366" d="M16.001 3C9.106 3 3.5 8.605 3.5 15.5c0 2.31.63 4.474 1.727 6.334L3 29l7.36-2.166A12.44 12.44 0 0 0 16 28c6.895 0 12.5-5.605 12.5-12.5S22.896 3 16.001 3Z"/>
+              <path fill="#fff" d="M22.1 19.14c-.33.94-1.64 1.72-2.7 1.94-.72.15-1.66.27-4.82-1.03-4.05-1.68-6.65-5.79-6.85-6.06-.2-.27-1.63-2.17-1.63-4.14 0-1.97 1.03-2.94 1.4-3.34.37-.4.8-.5 1.07-.5.27 0 .53 0 .77.01.25.01.58-.09.9.7.33.8 1.13 2.77 1.23 2.97.1.2.17.44.03.71-.13.27-.2.44-.4.68-.2.24-.42.53-.6.71-.2.2-.41.42-.18.82.24.4 1.05 1.74 2.26 2.82 1.55 1.38 2.86 1.81 3.26 2.01.4.2.63.17.86-.1.24-.27 1-1.17 1.27-1.57.27-.4.54-.33.9-.2.37.13 2.34 1.1 2.74 1.3.4.2.66.3.76.47.1.17.1.98-.23 1.92Z"/>
+            </svg>
+            <span data-i18n="labelPhone">Téléphone / WhatsApp <span class="req">*</span></span>
+          </label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel"
+                 data-i18n-placeholder="placeholderPhone" placeholder="Ex : 06 12 34 56 78" required>
+          <span class="error-msg" id="err-phone" data-i18n="errorPhone">Veuillez saisir un numéro valide.</span>
+        </div>
+
+        <div class="field">
+          <label for="email" data-i18n="labelEmail">Adresse e-mail (optionnel)</label>
+          <input type="email" id="email" name="email" autocomplete="email"
+                 data-i18n-placeholder="placeholderEmail" placeholder="Ex : sara@email.com">
+          <span class="error-msg" id="err-email" data-i18n="errorEmail">Adresse e-mail invalide.</span>
+        </div>
+      </fieldset>
+
+      <!-- ---- Section 2 : Service ---- -->
+      <fieldset class="fieldset">
+        <legend data-i18n="sectionService">2. Type de soin</legend>
+
+        <div class="field">
+          <label for="service" data-i18n="labelService">Sélectionnez un service <span class="req">*</span></label>
+          <select id="service" name="service" required>
+            <option value="" data-i18n="serviceDefault">-- Choisir un service / اختر خدمة --</option>
+            <option value="consultation">Consultation dentaire / فحص الأسنان</option>
+            <option value="detartrage">Détartrage / تنظيف الأسنان</option>
+            <option value="caries">Soins des caries / علاج التسوس</option>
+            <option value="extraction">Extraction dentaire / قلع الأسنان</option>
+            <option value="blanchiment">Blanchiment dentaire / تبييض الأسنان</option>
+            <option value="canal">Traitement de canal / علاج العصب</option>
+            <option value="couronnes">Couronnes dentaires / تيجان الأسنان</option>
+            <option value="orthodontie">Orthodontie / تقويم الأسنان</option>
+          </select>
+          <span class="error-msg" id="err-service" data-i18n="errorService">Veuillez choisir un service.</span>
+        </div>
+
+        <!-- Dynamic info box injected by JS -->
+        <div id="serviceInfoBox" class="service-info" hidden aria-live="polite">
+          <div class="service-info__row">
+            <span class="service-info__label" data-i18n="serviceDescLabel">Description</span>
+            <p id="serviceInfoDesc" class="service-info__desc"></p>
+          </div>
+          <div class="service-info__row">
+            <span class="service-info__label" data-i18n="servicePriceLabel">Prix estimé</span>
+            <p id="serviceInfoPrice" class="service-info__price"></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- ---- Section 3 : Date & Heure ---- -->
+      <fieldset class="fieldset">
+        <legend data-i18n="sectionSchedule">3. Date et heure</legend>
+
+        <div class="field">
+          <label for="date" data-i18n="labelDate">Date du rendez-vous <span class="req">*</span></label>
+          <input type="date" id="date" name="date" required>
+          <span class="error-msg" id="err-date" data-i18n="errorDate">Veuillez choisir une date valide.</span>
+        </div>
+
+        <div class="field">
+          <label data-i18n="labelTime">Créneau horaire <span class="req">*</span></label>
+
+          <p class="slot-group-title" data-i18n="slotMorning">Matin (09:00 – 13:00)</p>
+          <div class="slots" id="slotsMorning" role="group" aria-label="Créneaux du matin"></div>
+
+          <p class="slot-group-title slot-group-title--break" data-i18n="slotBreak">Pause déjeuner : 13:00 – 14:00 (indisponible)</p>
+
+          <p class="slot-group-title" data-i18n="slotAfternoon">Après-midi (14:00 – 17:00)</p>
+          <div class="slots" id="slotsAfternoon" role="group" aria-label="Créneaux de l'après-midi"></div>
+
+          <input type="hidden" id="time" name="time" required>
+          <span class="error-msg" id="err-time" data-i18n="errorTime">Veuillez choisir un créneau horaire.</span>
+        </div>
+      </fieldset>
+
+      <!-- ---- Submit ---- -->
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <svg class="icon-inline" viewBox="0 0 32 32" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M16.001 3C9.106 3 3.5 8.605 3.5 15.5c0 2.31.63 4.474 1.727 6.334L3 29l7.36-2.166A12.44 12.44 0 0 0 16 28c6.895 0 12.5-5.605 12.5-12.5S22.896 3 16.001 3Z" opacity="0.15"/>
+        </svg>
+        <span data-i18n="submitBtn">Confirmer le rendez-vous / تأكيد الموعد</span>
+      </button>
+
+      <p class="form-note" data-i18n="formNote">
+        En confirmant, un message WhatsApp pré-rempli s'ouvrira pour finaliser votre demande auprès du cabinet.
+      </p>
+
+      <div id="statusMsg" class="status-msg" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
