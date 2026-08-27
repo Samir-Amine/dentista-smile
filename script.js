@@ -22,7 +22,7 @@
 
     // Your webhook endpoint (Zapier / Make / n8n / your own backend).
     // Leave as "" to disable the webhook call entirely.
-    WEBHOOK_URL: "https://your-webhook-url.example.com/rendezvous",
+    WEBHOOK_URL: "https://hook.eu1.make.com/2u7x69cioniphw74ma5cqt9op9u78o8g",
   };
 
   /* ---------------------------------------------------------
@@ -38,7 +38,7 @@
       placeholderFullName: "Ex : Sara El Amrani",
       errorFullName: "Veuillez saisir votre nom complet.",
       labelPhone: "Téléphone / WhatsApp *",
-      placeholderPhone: "Ex : 06 12 34 56 78",
+      placeholderPhone: "Ex : 212612345678",
       errorPhone: "Veuillez saisir un numéro valide.",
       labelEmail: "Adresse e-mail (optionnel)",
       placeholderEmail: "Ex : sara@email.com",
@@ -72,7 +72,7 @@
       placeholderFullName: "مثال: سارة العمراني",
       errorFullName: "يرجى إدخال اسمك الكامل.",
       labelPhone: "الهاتف / واتساب *",
-      placeholderPhone: "مثال: 0612345678",
+      placeholderPhone: "مثال: 212612345678",
       errorPhone: "يرجى إدخال رقم هاتف صحيح.",
       labelEmail: "البريد الإلكتروني (اختياري)",
       placeholderEmail: "مثال: sara@email.com",
@@ -220,7 +220,7 @@
 
   function buildSlots(startHour, endHour, container) {
     for (let h = startHour; h < endHour; h++) {
-      for (let m = 0; m < 60; m += 30) {
+      for (let m = 0; m < 60; m += 60) {
         const hh = String(h).padStart(2, "0");
         const mm = String(m).padStart(2, "0");
         const label = `${hh}:${mm}`;
