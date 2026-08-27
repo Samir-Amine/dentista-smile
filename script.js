@@ -18,7 +18,7 @@
   const CONFIG = {
     // Your webhook endpoint (Zapier / Make / n8n / your own backend).
     // The form POSTs the booking data here as JSON on submit.
-    WEBHOOK_URL: "https://your-webhook-url.example.com/rendezvous",
+    WEBHOOK_URL: "https://hook.eu1.make.com/2u7x69cioniphw74ma5cqt9op9u78o8g",
   };
 
   /* ---------------------------------------------------------
@@ -34,7 +34,7 @@
       placeholderFullName: "Ex : Sara El Amrani",
       errorFullName: "Veuillez saisir votre nom complet.",
       labelPhone: "Téléphone / WhatsApp *",
-      placeholderPhone: "Ex : 06 12 34 56 78",
+      placeholderPhone: "Ex : 2120612345678",
       errorPhone: "Veuillez saisir un numéro valide.",
       labelEmail: "Adresse e-mail (optionnel)",
       placeholderEmail: "Ex : sara@email.com",
@@ -68,7 +68,7 @@
       placeholderFullName: "مثال: سارة العمراني",
       errorFullName: "يرجى إدخال اسمك الكامل.",
       labelPhone: "الهاتف / واتساب *",
-      placeholderPhone: "مثال: 0612345678",
+      placeholderPhone: "مثال: 212612345678",
       errorPhone: "يرجى إدخال رقم هاتف صحيح.",
       labelEmail: "البريد الإلكتروني (اختياري)",
       placeholderEmail: "مثال: sara@email.com",
