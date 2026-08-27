@@ -1,12 +1,12 @@
 /* =========================================================
    DENTAL CLINIC BOOKING FORM — SCRIPT
    Sections:
-   1. CONFIG            — clinic WhatsApp number + webhook URL
+   1. CONFIG            — webhook URL
    2. TRANSLATIONS       — FR / AR strings + language toggle
    3. SERVICES DATA       — descriptions & prices (FR/AR)
    4. TIME SLOTS          — dynamic generation (09-13h / 14-17h)
    5. VALIDATION           — required-field checks
-   6. SUBMIT HANDLER        — builds WhatsApp message + sends webhook
+   6. SUBMIT HANDLER        — posts booking data to the webhook
    ========================================================= */
 
 (function () {
@@ -16,13 +16,9 @@
      1. CONFIG — EDIT THESE TWO VALUES BEFORE DEPLOYMENT
      --------------------------------------------------------- */
   const CONFIG = {
-    // Cabinet's WhatsApp number in international format, no "+" and no spaces
-    // Example for Morocco: "212612345678"
-    CLINIC_WHATSAPP_NUMBER: "212600000000",
-
     // Your webhook endpoint (Zapier / Make / n8n / your own backend).
-    // Leave as "" to disable the webhook call entirely.
-    WEBHOOK_URL: "https://hook.eu1.make.com/2u7x69cioniphw74ma5cqt9op9u78o8g",
+    // The form POSTs the booking data here as JSON on submit.
+    WEBHOOK_URL: "https://your-webhook-url.example.com/rendezvous",
   };
 
   /* ---------------------------------------------------------
@@ -32,13 +28,13 @@
     fr: {
       clinicName: "Cabinet Dentaire Al Amal",
       clinicTagline: "Votre sourire, notre priorité",
-      introText: "Remplissez le formulaire ci-dessous pour réserver votre rendez-vous. Nous vous confirmerons via WhatsApp.",
+      introText: "Remplissez le formulaire ci-dessous pour réserver votre rendez-vous. Notre équipe vous contactera pour confirmer.",
       sectionContact: "1. Vos coordonnées",
       labelFullName: "Nom complet *",
       placeholderFullName: "Ex : Sara El Amrani",
       errorFullName: "Veuillez saisir votre nom complet.",
       labelPhone: "Téléphone / WhatsApp *",
-      placeholderPhone: "Ex : 212612345678",
+      placeholderPhone: "Ex : 06 12 34 56 78",
       errorPhone: "Veuillez saisir un numéro valide.",
       labelEmail: "Adresse e-mail (optionnel)",
       placeholderEmail: "Ex : sara@email.com",
@@ -58,21 +54,21 @@
       slotAfternoon: "Après-midi (14:00 – 17:00)",
       errorTime: "Veuillez choisir un créneau horaire.",
       submitBtn: "Confirmer le rendez-vous / تأكيد الموعد",
-      formNote: "En confirmant, un message WhatsApp pré-rempli s'ouvrira pour finaliser votre demande auprès du cabinet.",
+      formNote: "En confirmant, votre demande de rendez-vous sera envoyée directement au cabinet.",
       sendingMsg: "Envoi en cours...",
-      successMsg: "Merci ! Ouverture de WhatsApp pour confirmer votre rendez-vous.",
-      webhookErrorMsg: "Rendez-vous préparé. (Note : l'enregistrement automatique a échoué, mais WhatsApp va s'ouvrir.)",
+      successMsg: "Merci ! Votre demande de rendez-vous a bien été envoyée.",
+      webhookErrorMsg: "Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous appeler directement.",
     },
     ar: {
       clinicName: "عيادة الأمل لطب الأسنان",
       clinicTagline: "ابتسامتكم أولويتنا",
-      introText: "املأ الاستمارة أدناه لحجز موعدك. سنؤكد لك عبر واتساب.",
+      introText: "املأ الاستمارة أدناه لحجز موعدك. سيتواصل معك فريقنا للتأكيد.",
       sectionContact: "1. معلومات الاتصال",
       labelFullName: "الاسم الكامل *",
       placeholderFullName: "مثال: سارة العمراني",
       errorFullName: "يرجى إدخال اسمك الكامل.",
       labelPhone: "الهاتف / واتساب *",
-      placeholderPhone: "مثال: 212612345678",
+      placeholderPhone: "مثال: 0612345678",
       errorPhone: "يرجى إدخال رقم هاتف صحيح.",
       labelEmail: "البريد الإلكتروني (اختياري)",
       placeholderEmail: "مثال: sara@email.com",
@@ -92,10 +88,10 @@
       slotAfternoon: "مساءً (14:00 – 17:00)",
       errorTime: "يرجى اختيار موعد زمني.",
       submitBtn: "تأكيد الموعد / Confirmer le rendez-vous",
-      formNote: "بعد التأكيد، ستفتح رسالة واتساب معبأة مسبقاً لإتمام طلبك لدى العيادة.",
+      formNote: "بعد التأكيد، سيتم إرسال طلب موعدك مباشرة إلى العيادة.",
       sendingMsg: "جارٍ الإرسال...",
-      successMsg: "شكراً لك! سيتم فتح واتساب لتأكيد موعدك.",
-      webhookErrorMsg: "تم تجهيز الموعد. (ملاحظة: فشل الحفظ التلقائي، لكن واتساب سيفتح الآن.)",
+      successMsg: "شكراً لك! تم إرسال طلب موعدك بنجاح.",
+      webhookErrorMsg: "حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى أو الاتصال بنا مباشرة.",
     },
   };
 
@@ -306,7 +302,7 @@
   }
 
   /* ---------------------------------------------------------
-     6. SUBMIT — build WhatsApp message + fire webhook
+     6. SUBMIT — POST booking data to the webhook
      --------------------------------------------------------- */
   const form = document.getElementById("bookingForm");
   const statusMsg = document.getElementById("statusMsg");
@@ -317,52 +313,30 @@
     statusMsg.hidden = false;
   }
 
-  function formatDateForMessage(isoDate) {
-    const [y, m, d] = isoDate.split("-");
-    return `${d}/${m}/${y}`;
-  }
-
-  function buildWhatsAppMessage(data) {
-    const svc = services[data.service];
-    const serviceLabel = `${svc.fr} / ${svc.ar}`;
-
-    return (
-      `*Nouvelle demande de rendez-vous / طلب حجز موعد جديد*\n\n` +
-      `👤 Nom / الاسم : ${data.fullName}\n` +
-      `📞 Téléphone / الهاتف : ${data.phone}\n` +
-      (data.email ? `✉️ Email : ${data.email}\n` : "") +
-      `🦷 Service / الخدمة : ${serviceLabel}\n` +
-      `💰 Prix estimé / السعر التقديري : ${svc.price}\n` +
-      `📅 Date : ${formatDateForMessage(data.date)}\n` +
-      `⏰ Heure / الوقت : ${data.time}\n`
-    );
-  }
-
   async function sendToWebhook(data) {
-    if (!CONFIG.WEBHOOK_URL) return; // webhook disabled
+    if (!CONFIG.WEBHOOK_URL) {
+      throw new Error("WEBHOOK_URL is not configured.");
+    }
 
-    try {
-      await fetch(CONFIG.WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: data.fullName,
-          phone: data.phone,
-          email: data.email || null,
-          service: data.service,
-          serviceLabel: `${services[data.service].fr} / ${services[data.service].ar}`,
-          estimatedPrice: services[data.service].price,
-          date: data.date,
-          time: data.time,
-          language: currentLang,
-          submittedAt: new Date().toISOString(),
-        }),
-      });
-    } catch (err) {
-      // Non-blocking: the WhatsApp redirect must still happen even if the
-      // webhook is unreachable (e.g. offline, misconfigured URL).
-      console.warn("Webhook call failed:", err);
-      throw err;
+    const response = await fetch(CONFIG.WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fullName: data.fullName,
+        phone: data.phone,
+        email: data.email || null,
+        service: data.service,
+        serviceLabel: `${services[data.service].fr} / ${services[data.service].ar}`,
+        estimatedPrice: services[data.service].price,
+        date: data.date,
+        time: data.time,
+        language: currentLang,
+        submittedAt: new Date().toISOString(),
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Webhook responded with status ${response.status}`);
     }
   }
 
@@ -390,29 +364,18 @@
     submitBtn.disabled = true;
     showStatus(translations[currentLang].sendingMsg, "success");
 
-    let webhookFailed = false;
     try {
       await sendToWebhook(data);
-    } catch (e) {
-      webhookFailed = true;
+      showStatus(translations[currentLang].successMsg, "success");
+      form.reset();
+      document.querySelectorAll(".slot-btn.selected").forEach((b) => b.classList.remove("selected"));
+      serviceInfoBox.hidden = true;
+    } catch (err) {
+      console.warn("Webhook call failed:", err);
+      showStatus(translations[currentLang].webhookErrorMsg, "error");
+    } finally {
+      submitBtn.disabled = false;
     }
-
-    // Build and open the WhatsApp deep link regardless of webhook outcome
-    const message = buildWhatsAppMessage(data);
-    const waUrl = `https://wa.me/${CONFIG.CLINIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-    window.open(waUrl, "_blank", "noopener");
-
-    showStatus(
-      webhookFailed
-        ? translations[currentLang].webhookErrorMsg
-        : translations[currentLang].successMsg,
-      webhookFailed ? "error" : "success"
-    );
-
-    submitBtn.disabled = false;
-    form.reset();
-    document.querySelectorAll(".slot-btn.selected").forEach((b) => b.classList.remove("selected"));
-    serviceInfoBox.hidden = true;
   });
 
   /* ---------------------------------------------------------
