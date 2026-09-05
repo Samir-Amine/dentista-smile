@@ -18,7 +18,7 @@
   const CONFIG = {
     // Your webhook endpoint (Zapier / Make / n8n / your own backend).
     // The form POSTs the booking data here as JSON on submit.
-    WEBHOOK_URL: "https://hook.eu1.make.com/muo5z9msswsl32qwcsy8mvztjkle42ub",
+    WEBHOOK_URL: "https://hook.eu1.make.com/tdy7in4wqt7rel9llwslbc3vseshflmr",
   };
 
   /* ---------------------------------------------------------
